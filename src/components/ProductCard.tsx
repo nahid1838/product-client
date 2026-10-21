@@ -2,10 +2,12 @@ import { IProduct } from "@/lib/type";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { EditUserDialog } from "./EditUserDialog";
+import { Button } from "./ui/button";
+import { DeleteProductDialog } from "./DeleteProductDialog";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
   return (
-    <Link href={`/product/${product._id}`}>
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl">
       {/* Product Image */}
       <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-gray-50 p-5 sm:p-6">
@@ -30,9 +32,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
 
         <div className="mt-3 flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs text-gray-500 sm:text-sm">
-              Price
-            </p>
+            <p className="text-xs text-gray-500 sm:text-sm">Price</p>
 
             <p className="mt-1 text-xl font-bold text-orange-600 sm:text-2xl">
               ৳{Number(product.product_price).toLocaleString("en-BD")}
@@ -44,14 +44,21 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           </div>
         </div>
 
-        <div className="mt-4 border-t border-gray-100 pt-3">
-          <p className="text-xs text-gray-400">
-            Quality products at a great price
-          </p>
+        <div className="mt-4 flex justify-between border-t border-gray-100 pt-3">
+          <Link href={`/product/${product._id}`}>
+            <Button
+              className="bg-orange-500 text-white font-semibold hover:bg-orange-700 hover:text-white"
+              variant="outline"
+            >
+              View Details
+            </Button>
+          </Link>
+
+          <EditUserDialog product={product} />
+          <DeleteProductDialog id={product._id}/>
         </div>
       </div>
     </article>
-    </Link>
   );
 };
 

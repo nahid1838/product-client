@@ -12,16 +12,20 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { Bounce, toast } from "react-toastify";
 
 const AddProductForm = () => {
+  const router = useRouter();
+
   const handleOnsubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
-    console.log(data);
+    router.refresh();
 
     const res = await fetch("http://localhost:5000/products", {
       method: "POST",
@@ -33,7 +37,18 @@ const AddProductForm = () => {
     });
 
     const result = await res.json();
-    console.log(result);
+
+    toast.success("Product added Successfully!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
   };
 
   return (
