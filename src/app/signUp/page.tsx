@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -10,9 +12,43 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { authClient } from "@/lib/auth-client";
+import { User } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { Bounce, toast } from "react-toastify";
 
 const SignUpPage = () => {
+
+    const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const user = Object.fromEntries(formData.entries()) as { name: string, email: string, password: string };
+
+        const { data, error } = await authClient.signUp.email({
+            ...user,
+            callbackURL: "/"
+
+        })
+        if (data) {
+            redirect("/");
+        }
+        if (error) {
+            toast.error(`${error.message}`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
+        }
+    }
+
     return (
         <div className="container mx-auto flex justify-center py-15">
             <Card className="w-full max-w-sm">
@@ -27,7 +63,7 @@ const SignUpPage = () => {
                         </Link>
                     </CardAction>
                 </CardHeader>
-                <form>
+                <form onSubmit={onSubmit}>
                     <CardContent>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
@@ -64,7 +100,7 @@ const SignUpPage = () => {
                     </CardContent>
                     <CardFooter className="flex-col gap-2">
                         <Button type="submit" className="w-full">
-                            Login
+                            Submit
                         </Button>
                         <Button variant="outline" className="w-full">
                             Login with Google

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -10,9 +12,37 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { Bounce, toast } from "react-toastify";
 
 const SignInPage = () => {
+
+    const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const user = Object.fromEntries(formData.entries()) as { email: string, password: string };
+
+        const { data, error } = await authClient.signIn.email({
+            ...user,
+            callbackURL: "/"
+        })
+        if (error) {
+            toast.error(`${error.message}`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
+        }
+    }
+
     return (
         <div className="container mx-auto flex justify-center py-15">
             <Card className="w-full max-w-sm">
@@ -27,7 +57,7 @@ const SignInPage = () => {
                         </Link>
                     </CardAction>
                 </CardHeader>
-                <form>
+                <form onSubmit={onSubmit}>
                     <CardContent>
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
