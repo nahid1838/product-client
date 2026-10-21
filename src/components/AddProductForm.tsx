@@ -52,7 +52,7 @@ const AddProductForm = () => {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-white to-orange-50 px-4 py-10">
+    <main id="createP" className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-100 via-white to-orange-50 px-4 py-10">
       <Card className="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50">
         <CardHeader className="space-y-2 border-b bg-white px-6 py-6 sm:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
