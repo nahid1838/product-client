@@ -49,6 +49,20 @@ const SignUpPage = () => {
         }
     }
 
+    const handleGoogleSignIn = async () => {
+            const data = await authClient.signIn.social({
+                provider: "google",
+            })
+            console.log(data)
+        }
+
+    const handleGithubSignIn = async () => {
+        const data = await authClient.signIn.social({
+            provider: "github",
+        })
+        console.log(data)
+    }
+
     return (
         <div className="container mx-auto flex justify-center py-15">
             <Card className="w-full max-w-sm">
@@ -102,8 +116,13 @@ const SignUpPage = () => {
                         <Button type="submit" className="w-full">
                             Submit
                         </Button>
-                        <Button variant="outline" className="w-full">
-                            Login with Google
+                        <Button onClick={handleGoogleSignIn}
+                         variant="outline" className="w-full bg-orange-500 hover:bg-orange-600 text-white hover:text-white">
+                            SignUp with Google
+                        </Button>
+                        <Button onClick={handleGithubSignIn}
+                         variant="outline" className="w-full bg-green-500 hover:bg-green-600 text-white hover:text-white">
+                            SignUp with Github
                         </Button>
                     </CardFooter>
                 </form>
